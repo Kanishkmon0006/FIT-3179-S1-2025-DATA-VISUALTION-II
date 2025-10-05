@@ -1,17 +1,201 @@
 SA2_CODE,SA2_NAME,overseas_percent
-101011001,Melbourne,45.2
-101011002,Port Phillip,52.1
-101011003,Yarra,48.7
-101011004,Stonnington,55.8
-101011005,Maribyrnong,42.3
-101021001,Sydney,54.6
-101021002,North Sydney,59.2
-101021003,Waverley,47.8
-101021004,Woollahra,51.5
-101031001,Brisbane,38.9
-101031002,Gold Coast,42.7
-101041001,Perth,43.6
-101051001,Adelaide,36.7
-101061001,Hobart,28.8
-101071001,Darwin,31.6
-101081001,Canberra,45.3
+101021001,Braidwood,19.5
+101021002,Karabar,28.9
+101021003,Queanbeyan,30.2
+101021004,Queanbeyan - East,24.1
+101021005,Queanbeyan West - Jerrabomberra,31.8
+101021006,Googong,24.3
+101021007,Queanbeyan Surrounds,33.1
+101021008,Bombala,17.2
+101021009,Cooma,19.9
+101021010,Cooma Surrounds,16.0
+101021011,Jindabyne - Berridale,19.7
+101021012,Batemans Bay,20.3
+101021013,Batemans Bay - South,22.2
+101021014,Bega - Tathra,16.7
+101021015,Bega-Eden Hinterland,17.6
+101021016,Broulee - Tomakin,8.3
+101021017,Deua - Wadbilliga,0.6
+101021018,Eden,8.0
+101021019,Eurobodalla Hinterland,8.0
+101021020,Merimbula - Tura Beach,25.8
+101021021,Moruya - Tuross Head,20.0
+101021022,Narooma - Bermagui,22.4
+101021023,Goulburn,42.4
+101021024,Goulburn Surrounds,16.5
+101021025,Yass,17.3
+101021026,Yass Surrounds,23.1
+101021027,Young,22.2
+101021028,Young Surrounds,17.3
+101021029,Avoca Beach - Copacabana,20.7
+101021030,Box Head - MacMasters Beach,15.4
+101021031,Calga - Kulnura,26.5
+101021032,Erina - Green Point,32.3
+101021033,Gosford - Springfield,36.2
+101021034,Kariong,15.6
+101021035,Kincumber - Picketts Valley,16.0
+101021036,Narara,16.9
+101021037,Niagara Park - Lisarow,14.0
+101021038,Point Clare - Koolewong,31.9
+101021039,Saratoga - Davistown,39.7
+101021040,Terrigal - North Avoca,18.0
+101021041,Umina - Booker Bay - Patonga,22.1
+101021042,Wamberal - Forresters Beach,17.8
+101021043,Woy Woy - Blackwall,15.6
+101021044,Wyoming,38.8
+101021045,Bateau Bay - Killarney Vale,19.8
+101021046,Blue Haven - San Remo,16.4
+101021047,Budgewoi - Buff Point - Halekulani,27.4
+101021048,Chittaway Bay - Tumbi Umbi,37.1
+101021049,Gorokan - Kanwal - Charmhaven,8.6
+101021050,Jilliby - Yarramalong,21.1
+101021051,Lake Munmorah - Mannering Park,7.9
+101021052,Ourimbah - Fountaindale,22.5
+101021053,Summerland Point - Gwandalan,38.7
+101021054,The Entrance,5.7
+101021055,Toukley - Norah Head,21.6
+101021056,Tuggerah - Kangy Angy,30.8
+101021057,Warnervale - Wadalba,19.4
+101021058,Wyong,0.0
+101021059,Bathurst - East,15.3
+101021060,Bathurst Surrounds,36.9
+101021061,Oberon,43.8
+101021062,Bathurst - South,23.8
+101021063,Bathurst - West,29.3
+101021064,Condobolin,33.5
+101021065,Cowra,35.3
+101021066,Cowra Surrounds,20.8
+101021067,Forbes,19.7
+101021068,Grenfell,24.7
+101021069,Parkes (NSW),28.1
+101021070,Parkes Surrounds,12.3
+101021071,West Wyalong,13.8
+101021072,Lithgow,20.9
+101021073,Lithgow Surrounds,8.0
+101021074,Mudgee,28.9
+101021075,Mudgee Surrounds - East,0.0
+101021076,Mudgee Surrounds - West,17.6
+101021077,Wollangambe - Wollemi,42.5
+101021078,Blayney,45.1
+101021079,Orange,25.8
+101021080,Orange - North,23.0
+101021081,Orange Surrounds,29.3
+101021082,Grafton,32.3
+101021083,Grafton Surrounds,29.7
+101021084,Maclean - Yamba - Iluka,15.9
+101021085,Bellingen,21.9
+101021086,Coffs Harbour - North,34.3
+101021087,Coffs Harbour - South,39.4
+101021088,Coramba - Nana Glen - Bucca,12.3
+101021089,Dorrigo,5.8
+101021090,Korora - Emerald Beach,21.3
+101021091,Sawtell - Boambee,23.4
+101021092,Urunga,18.2
+101021093,Woolgoolga - Arrawarra,34.6
+101021094,Bourke - Brewarrina,12.1
+101021095,Cobar,7.9
+101021096,Coonamble,12.1
+101021097,Nyngan - Warren,8.6
+101021098,Walgett - Lightning Ridge,15.7
+101021099,Broken Hill,33.3
+101021100,Far West,0.1
+101021101,Coonabarabran,16.2
+101021102,Dubbo - East,26.3
+101021103,Dubbo - South,28.1
+101021104,Dubbo - West,27.0
+101021105,Dubbo Surrounds,25.4
+101021106,Gilgandra,16.9
+101021107,Narromine,20.5
+101021108,Wellington,23.8
+101021109,Branxton - Greta - Pokolbin,17.4
+101021110,Cessnock,21.2
+101021111,Cessnock Surrounds,8.3
+101021112,Dungog,10.9
+101021113,Kurri Kurri - Abermain,13.0
+101021114,Singleton,11.4
+101021115,Singleton Surrounds,8.3
+101021116,Maitland,41.5
+101021117,Maitland - North,25.2
+101021118,East Maitland - Metford,29.3
+101021119,Rutherford (North) - Aberglasslyn,31.2
+101021120,Rutherford (South) - Telarah,32.2
+101021121,Tenambit - East Maitland,24.9
+101021122,Thornton - Millers Forest,0.8
+101021123,Anna Bay,36.5
+101021124,Lemon Tree Passage - Tanilba Bay,39.4
+101021125,Nelson Bay Peninsula,26.0
+101021126,Raymond Terrace,21.5
+101021127,Seaham - Woodville,15.1
+101021128,Tea Gardens - Hawks Nest,17.8
+101021129,Williamtown - Medowie - Karuah,0.1
+101021130,Muswellbrook,16.2
+101021131,Muswellbrook Surrounds,12.5
+101021132,Scone,14.3
+101021133,Scone Surrounds,0.1
+101021134,Dapto - Avondale,18.6
+101021135,Horsley - Kembla Grange,31.7
+101021136,Port Kembla Industrial,36.6
+101021137,Unanderra - Mount Kembla,30.5
+101021138,Berkeley - Lake Heights - Cringila,42.6
+101021139,Port Kembla - Warrawong,46.9
+101021140,Windang - Primbee,12.2
+101021141,Illawarra Catchment Reserve,0.0
+101021142,Albion Park - Macquarie Pass,26.3
+101021143,Albion Park Rail,24.8
+101021144,Kiama,22.4
+101021145,Kiama Downs - Minnamurra,28.6
+101021146,Kiama Hinterland - Gerringong,26.3
+101021147,Shellharbour - Flinders,28.3
+101021148,Shellharbour - Oak Flats,35.6
+101021149,Warilla,38.6
+101021150,Balgownie - Fairy Meadow,40.7
+101021151,Corrimal - Tarrawanna - Bellambi,35.8
+101021152,Figtree - Keiraville,41.5
+101021153,Helensburgh,24.6
+101021154,Thirroul - Austinmer - Coalcliff,22.4
+101021155,Woonona - Bulli - Russell Vale,27.2
+101021156,Wollongong - East,45.8
+101021157,Wollongong - West,34.7
+101021158,Bulahdelah - Stroud,16.4
+101021159,Forster,24.5
+101021160,Forster-Tuncurry Surrounds,22.3
+101021161,Tuncurry,23.5
+101021162,Kempsey,19.5
+101021163,Kempsey Surrounds,16.8
+101021164,Macksville - Scotts Head,21.3
+101021165,Nambucca Heads,24.3
+101021166,Nambucca Heads Surrounds,22.1
+101021167,South West Rocks,22.6
+101021168,Lord Howe Island,0.0
+101021169,Laurieton - Bonny Hills,25.9
+101021170,Port Macquarie - West,26.3
+101021171,Port Macquarie Surrounds,22.7
+101021172,Wauchope,24.3
+101021173,Port Macquarie - East,30.7
+101021174,Port Macquarie - South,35.6
+101021175,Gloucester,16.2
+101021176,Old Bar - Manning Point - Red Head,18.6
+101021177,Taree,22.8
+101021178,Taree Surrounds,20.7
+101021179,Wingham,17.8
+101021180,Albury - East,27.3
+101021181,Albury - North,32.1
+101021182,Albury - South,29.9
+101021183,Albury Surrounds,21.5
+101021184,Lavington,34.6
+101021185,Hay,23.3
+101021186,Wentworth - Buronga,28.8
+101021187,Wentworth-Balranald Region,25.4
+101021188,Corowa,20.3
+101021189,Corowa Surrounds,18.4
+101021190,Deniliquin,21.7
+101021191,Deniliquin Surrounds,18.5
+101021192,Moama,27.0
+101021193,Tocumwal - Finley - Jerilderie,22.3
+101021194,Armidale,30.6
+101021195,Armidale Surrounds - North,25.4
+101021196,Armidale Surrounds - South,21.3
+101021197,Walcha,16.2
+101021198,Glen Innes,18.8
+101021199,Inverell,22.0
+101021200,Inverell Surrounds - East,20.5
