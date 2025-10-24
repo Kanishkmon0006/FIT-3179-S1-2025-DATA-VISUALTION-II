@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 420,
+  "data": { "url": "migration_flows_2004_2020_simple.csv" },
+  "transform": [
+    { "calculate": "toNumber(datum.NOM)", "as": "NOM_val" },
+    { "calculate": "toDate(datum.Year + '-01-01')", "as": "YearDate" }
+  ],
+  "mark": { "type": "line", "interpolate": "monotone", "color": "#2066b1", "point": true },
+  "encoding": {
+    "x": { "field": "YearDate", "type": "temporal", "title": "Year" },
+    "y": { "field": "NOM_val", "type": "quantitative", "title": "Net Overseas Migration" },
+    "tooltip": [
+      { "field": "YearDate", "timeUnit": "year", "title": "Year" },
+      { "field": "NOM_val", "title": "NOM", "format": "," }
+    ]
+  }
+}

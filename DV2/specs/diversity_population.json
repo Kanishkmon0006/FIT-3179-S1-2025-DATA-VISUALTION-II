@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 520,
+  "data": { "url": "sa3_metrics_2021_final.csv" },
+  "transform": [
+    { "filter": "datum.total_persons > 0 && datum.diversity_simpson >= 0 && datum.diversity_simpson <= 1" }
+  ],
+  "layer": [
+    {
+      "transform": [{ "bin": { "maxbins": 10 }, "field": "total_persons", "as": "pop_bin" }],
+      "mark": { "type": "boxplot", "extent": "min-max", "median": { "color": "#000" } },
+      "encoding": {
+        "x": { "field": "pop_bin", "type": "ordinal", "title": "Population (binned)" },
+        "y": { "field": "diversity_simpson", "type": "quantitative", "title": "Simpson Diversity Index" },
+        "color": { "value": "#8fb8ff" }
+      }
+    },
+    {
+      "transform": [
+        { "bin": { "maxbins": 10 }, "field": "total_persons", "as": "pop_bin" },
+        { "aggregate": [
+          { "op": "mean", "field": "diversity_simpson", "as": "mean_div" },
+          { "op": "mean", "field": "total_persons", "as": "mean_pop" }
+        ], "groupby": ["pop_bin"] }
+      ],
+      "mark": { "type": "line", "stroke": "#c0392b", "strokeWidth": 3 },
+      "encoding": {
+        "x": { "field": "mean_pop", "type": "quantitative", "scale": { "type": "log" }, "title": "Population (log scale)" },
+        "y": { "field": "mean_div", "type": "quantitative" }
+      }
+    },
+    {
+      "mark": { "type": "point", "filled": true, "color": "#c0392b", "size": 70 },
+      "encoding": {
+        "x": { "field": "mean_pop", "type": "quantitative", "scale": { "type": "log" } },
+        "y": { "field": "mean_div", "type": "quantitative" }
+      }
+    }
+  ]
+}

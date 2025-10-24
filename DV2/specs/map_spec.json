@@ -1,0 +1,27 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 960,
+  "height": 600,
+  "projection": { "type": "naturalEarth1" },
+  "layer": [
+    {
+      "data": { "url": "sa3_2021_boundaries.json", "format": { "type": "topojson", "feature": "sa3_2021_boundaries" } },
+      "mark": { "type": "geoshape", "fill": "#eef2f6", "stroke": "#8a98a8", "strokeWidth": 0.4 }
+    },
+    {
+      "data": { "url": "sa3_metrics_2021_final.csv" },
+      "transform": [
+        { "lookup": "SA3_CODE21", "from": { "data": { "url": "sa3_metrics_2021_final.csv" }, "key": "SA3_CODE21", "fields": ["overseas_born_pct", "diversity_simpson"] } }
+      ],
+      "mark": { "type": "geoshape", "stroke": "#fff", "strokeWidth": 0.25 },
+      "encoding": {
+        "color": { "field": "overseas_born_pct", "type": "quantitative", "scale": { "scheme": "blues" }, "title": "Overseas-born (%)" },
+        "tooltip": [
+          { "field": "SA3_NAME21", "title": "SA3 name" },
+          { "field": "overseas_born_pct", "title": "Overseas-born (%)", "format": ".1f" },
+          { "field": "diversity_simpson", "title": "Diversity (Simpson)", "format": ".3f" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 440,
+  "data": { "url": "seifa_2021_clean.csv" },
+  "transform": [
+    { "calculate": "toString(datum.SA2_CODE)", "as": "SA2_CODE_STR" },
+    { "calculate": "substring(datum.SA2_CODE_STR,0,5)", "as": "SA3_CODE21" },
+    { "calculate": "toNumber(datum.IRSAD_SCORE)", "as": "IRSAD" },
+    { "aggregate": [{ "op": "mean", "field": "IRSAD", "as": "IRSAD_mean" }], "groupby": ["SA3_CODE21"] },
+    { "lookup": "SA3_CODE21", "from": { "data": { "url": "sa3_metrics_2021_final.csv" }, "key": "SA3_CODE21", "fields": ["SA3_NAME21", "overseas_born_pct"] } },
+    { "calculate": "toNumber(datum.overseas_born_pct)", "as": "OBP" }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "point", "filled": true, "color": "#d73027", "size": 70, "opacity": 0.55 },
+      "encoding": {
+        "x": { "field": "IRSAD_mean", "type": "quantitative", "title": "Mean IRSAD (SA3)" },
+        "y": { "field": "OBP", "type": "quantitative", "title": "Overseas-born (%)" },
+        "tooltip": [
+          { "field": "SA3_NAME21", "title": "SA3 name" },
+          { "field": "IRSAD_mean", "title": "Mean IRSAD", "format": ".0f" },
+          { "field": "OBP", "title": "Overseas-born (%)", "format": ".1f" }
+        ]
+      }
+    },
+    {
+      "transform": [{ "regression": "OBP", "on": "IRSAD_mean" }],
+      "mark": { "type": "line", "stroke": "#333", "strokeDash": [4,3], "strokeWidth": 2 }
+    }
+  ]
+}

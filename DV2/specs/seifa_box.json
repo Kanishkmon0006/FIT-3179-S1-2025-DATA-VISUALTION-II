@@ -1,0 +1,18 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 1100,
+  "height": 420,
+  "data": { "url": "seifa_2021_clean.csv" },
+  "transform": [
+    { "calculate": "toString(datum.SA2_CODE)", "as": "SA2_CODE_STR" },
+    { "calculate": "substring(datum.SA2_CODE_STR,0,5)", "as": "SA3_CODE21" },
+    { "lookup": "SA3_CODE21", "from": { "data": { "url": "sa3_metrics_2021_final.csv" }, "key": "SA3_CODE21", "fields": ["overseas_born_pct"] } },
+    { "calculate": "toNumber(datum.overseas_born_pct)", "as": "OBP" }
+  ],
+  "mark": { "type": "boxplot", "extent": "min-max", "median": { "color": "#000" } },
+  "encoding": {
+    "x": { "field": "IRSAD_DECILE", "type": "ordinal", "title": "IRSAD Decile" },
+    "y": { "field": "OBP", "type": "quantitative", "title": "Overseas-born (%)" },
+    "color": { "field": "IRSAD_DECILE", "type": "ordinal", "legend": null, "scale": { "scheme": "blues" } }
+  }
+}
