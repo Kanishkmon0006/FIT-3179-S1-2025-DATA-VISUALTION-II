@@ -146,11 +146,11 @@
 
 <script>
 /* ---------- shared config ---------- */
-const TOPO = "DV2/Page/sa3_2021_boundaries.json"; // object name: sa3_2021_boundaries
+const TOPO = "data/sa3_2021_boundaries.json"; // object name must match the TopoJSON feature below
 const CSV_BY_YEAR = {
-  "2011": "DV2/Page/sa3_metrics_2011_final.csv",
-  "2016": "DV2/Page/sa3_metrics_2016_final.csv",
-  "2021": "DV2/Page/sa3_metrics_2021_final.csv"
+  "2011": "data/sa3_metrics_2011_final.csv",
+  "2016": "data/sa3_metrics_2016_final.csv",
+  "2021": "data/sa3_metrics_2021_final.csv"
 };
 const METRIC_META = {
   overseas_born_pct:{ title:"Overseas-born (%)",scheme:"blues",fmt:".1f"},
@@ -281,7 +281,7 @@ const nomSpec = {
   $schema:"https://vega.github.io/schema/vega-lite/v5.json",
   width: 900, height: 420, background:"#fff",
   padding: {"left":8,"top":8,"right":10,"bottom":36},
-  data:{ url:"DV2/Page/migration_flows_2004_2020_simple.csv" },
+  data:{ url:"data/migration_flows_2004_2020_simple.csv" },
   transform:[
     { calculate:"toNumber(datum.NOM)", as:"NOM_num" },
     { calculate:"isValid(datum.NOM_num)?datum.NOM_num:toNumber(datum.Net_Overseas_Migration)", as:"NOM_val" },
@@ -301,8 +301,8 @@ const nomSpec = {
 };
 
 /* ---------- C. SA2 box + jitter ---------- */
-const seifaFile = "DV2/Page/seifa_2021_clean.csv";
-const sa3File   = "DV2/Page/sa3_metrics_2021_final.csv";
+const seifaFile = "data/seifa_2021_clean.csv";
+const sa3File   = "data/sa3_metrics_2021_final.csv";
 
 const specBox = {
   $schema:"https://vega.github.io/schema/vega-lite/v5.json",
