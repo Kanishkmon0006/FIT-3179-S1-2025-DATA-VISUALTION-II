@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Migration Transformation in Australian Communities</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+<style>
+  :root{
+    --ink:#0f2a3a; --muted:#5f6b76; --bg:#f6f8fb; --card:#ffffff; --border:#e7edf3;
+    --accent:#1f6feb; --accent-2:#23a36e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial}
+  a{color:var(--accent);text-decoration:none}
+  header.nav{
+    position:sticky;top:0;z-index:10;background:#0f2235;color:#dfe8f1;
+    padding:10px 16px;border-bottom:1px solid #0b1a2a;
+  }
+  header.nav .wrap{max-width:1200px;margin:0 auto;display:flex;gap:20px;align-items:center}
+  .brand{font-weight:800;letter-spacing:.2px}
+  .links{display:flex;gap:14px;flex-wrap:wrap}
+  .links a{color:#dfe8f1;opacity:.9}
+  .links a:hover{opacity:1}
+  main{max-width:1200px;margin:22px auto;padding:0 16px;display:grid;gap:24px}
+  section{background:var(--card);border:1px solid var(--border);border-radius:12px;
+          box-shadow:0 3px 12px rgba(15,42,58,.06);padding:18px}
+  h2{margin:.2rem 0 0.25rem;font-size:1.15rem}
+  .sub{color:var(--muted);margin:0 0 10px}
+  .row{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+  @media (max-width: 1024px){ .row{grid-template-columns:1fr} }
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px}
+  .vis{min-height:420px}
+  .pill{display:inline-block;background:#e9f3ff;border:1px solid #cfe6ff;color:#0f2a3a;border-radius:999px;padding:4px 10px;font-size:.86rem}
+  footer{max-width:1200px;margin:10px auto 28px;padding:0 16px;color:var(--muted);font-size:.92rem}
+  .footbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .by{font-weight:700;color:#0b1e31}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="brand">Migration & Diversity</div>
+    <nav class="links">
+      <a href="#map">Map</a>
+      <a href="#nom">NOM Trend</a>
+      <a href="#seifa">SEIFA & Migration</a>
+      <a href="#divpop">Diversity vs Population</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- A. MAP -->
+  <section id="map">
+    <h2>A. SA3 Choropleth — Migration & Diversity</h2>
+    <p class="sub">Interactive SA3 map. Pick a <strong>year</strong> and <strong>metric</strong>; hover for details. New-arrivals metrics are 2021-only.</p>
+    <div class="row">
+      <div class="card">
+        <div id="mapControls" style="display:flex;gap:12px;align-items:center;margin:2px 0 10px;">
+          <span class="pill">Year</span>
+          <select id="yearSel">
+            <option value="2011">2011</option>
+            <option value="2016">2016</option>
+            <option value="2021" selected>2021</option>
+          </select>
+          <span class="pill">Metric</span>
+          <select id="metricSel">
+            <option value="overseas_born_pct" selected>Overseas-born (%)</option>
+            <option value="diversity_simpson">Simpson Diversity Index</option>
+            <option value="new_arrivals_share">New Arrivals Share (2017–2021) (%)</option>
+            <option value="new_arrivals_rate">New Arrivals Rate</option>
+          </select>
+          <span id="status" style="margin-left:auto;color:#1a7f37;font-weight:600;">Loading…</span>
+        </div>
+        <div id="mapView" class="vis"></div>
+      </div>
+      <aside class="card">
+        <h3 style="margin:.2rem 0 .4rem;font-size:1.05rem">How to read</h3>
+        <ul style="margin:.3rem 0 0 1rem;padding:0 0 0 1rem">
+          <li><b>Overseas-born (%)</b> highlights settlement concentrations.</li>
+          <li><b>Simpson Diversity</b> (0–1) captures cultural mix (higher = more diverse).</li>
+          <li><b>New Arrivals</b> show 2017–2021 recent migrants (share & rate).</li>
+        </ul>
+        <p class="sub" style="margin-top:8px">Tip: switch years to see how patterns shift in growth corridors and inner-metropolitan SA3s.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- B. NOM -->
+  <section id="nom">
+    <h2>B. Net Overseas Migration — Australia (2004–2020)</h2>
+    <p class="sub">Calendar-year national trend. Peaks pre-GFC and pre-COVID, with a sharp fall in 2020.</p>
+    <div class="row">
+      <div class="card"><div id="nomView" class="vis"></div></div>
+      <aside class="card">
+        <h3 style="margin:.2rem 0 .4rem;font-size:1.05rem">What it shows</h3>
+        <p class="sub">Macro context for the map: NOM pulses influence metro growth and housing demand. Compare peak years with high SA3 overseas-born shares.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- C & D. SEIFA -->
+  <section id="seifa">
+    <h2>C & D. Socio-economic (IRSAD) and Migration</h2>
+    <p class="sub">Socio-economic advantage (IRSAD) relates to migrant mix. The top chart shows <b>SA2 deciles</b>; the bottom shows <b>SA3 means</b> with a trend.</p>
+    <div class="card"><div id="box_sa2" class="vis"></div></div>
+    <div class="row" style="margin-top:12px">
+      <div class="card"><div id="sa3_scatter_red" class="vis"></div></div>
+      <aside class="card">
+        <h3 style="margin:.2rem 0 .4rem;font-size:1.05rem">Takeaways</h3>
+        <ul style="margin:.3rem 0 0 1rem;padding:0 0 0 1rem">
+          <li>Overseas-born share spans all deciles, skewed higher in advantaged areas.</li>
+          <li>SA3-level mean IRSAD vs overseas-born shows a mild negative slope, suggesting highly diverse pockets in mid-to-higher advantage zones.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- E. Diversity vs Population -->
+  <section id="divpop">
+    <h2>E. Diversity vs Population — SA3 (Binned Summary, 2021)</h2>
+    <p class="sub">SA3s are grouped into population ranges; boxplots show diversity spread; red points track the mean per bin.</p>
+    <div class="row">
+      <div class="card"><div id="divpopView" class="vis"></div></div>
+      <aside class="card">
+        <h3 style="margin:.2rem 0 .4rem;font-size:1.05rem">What to look for</h3>
+        <p class="sub">Large metro SA3s aren’t the only diverse places—smaller urban SA3s also show high Simpson values. The red mean line summarizes the overall pattern.</p>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footbar">
+    <div>Source: ABS Census 2011/2016/2021 (SA3 metrics); SEIFA 2021 (IRSAD); ABS Migration Australia (NOM). Built with Vega-Lite.</div>
+    <div class="by">Made By: Kanishk Srivastava &nbsp;|&nbsp; SId: 31887783</div>
+  </div>
+</footer>
+
+<script>
+/* ---------- shared config ---------- */
+const TOPO = "sa3_2021_boundaries.json"; // object name: sa3_2021_boundaries
+const CSV_BY_YEAR = {
+  "2011": "sa3_metrics_2011_final.csv",
+  "2016": "sa3_metrics_2016_final.csv",
+  "2021": "sa3_metrics_2021_final.csv"
+};
+const METRIC_META = {
+  overseas_born_pct:{ title:"Overseas-born (%)",scheme:"blues",fmt:".1f"},
+  diversity_simpson:{ title:"Simpson Diversity Index (0–1)",scheme:"greens",fmt:".3f"},
+  new_arrivals_share:{ title:"New Arrivals Share (2017–2021) (%)",scheme:"purples",fmt:".1f"},
+  new_arrivals_rate:{ title:"New Arrivals Rate (per 100)",scheme:"oranges",fmt:".2f"}
+};
+
+/* ---------- A. Choropleth ---------- */
+function mapSpec(year, metric, width){
+  const csv = CSV_BY_YEAR[year];
+  const meta = METRIC_META[metric];
+  const mapWidth  = Math.max(720, Math.min(1140, width||1140));
+  const mapHeight = Math.round(mapWidth * 0.62);
+
+  return {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    width: mapWidth,
+    height: mapHeight,
+    padding: {"left":10,"top":10,"right":90,"bottom":40},
+    background: "#ffffff",
+    autosize: {"type":"fit","contains":"padding"},
+    projection: { type: "naturalEarth1" },
+    layer: [
+      {
+        data: { url: TOPO, format: { type: "topojson", feature: "sa3_2021_boundaries" } },
+        transform: [
+          { filter: "datum && datum.type && datum.properties" },
+          { filter: "datum.properties.SA3_CODE21 && datum.properties.SA3_CODE21 !== 'ZZZZZ'" }
+        ],
+        mark: { type: "geoshape", fill: "#eef2f6", stroke: "#8a98a8", strokeWidth: 0.45 }
+      },
+      {
+        data: { url: TOPO, format: { type: "topojson", feature: "sa3_2021_boundaries" } },
+        transform: [
+          { filter: "datum && datum.type && datum.properties" },
+          { filter: "datum.properties.SA3_CODE21 && datum.properties.SA3_CODE21 !== 'ZZZZZ'" },
+          {
+            lookup: "properties.SA3_CODE21",
+            from: {
+              data: { url: csv, format:{type:"csv"} },
+              key: "SA3_CODE21",
+              fields: ["SA3_NAME21","year","total_persons","overseas_born","diversity_simpson",
+                       "recent_arrivals_2017_2021","overseas_born_pct","new_arrivals_share","new_arrivals_rate"]
+            }
+          },
+          { calculate: "toNumber(datum.total_persons)",             as: "total_persons_num" },
+          { calculate: "toNumber(datum.overseas_born)",             as: "overseas_born_num" },
+          { calculate: "toNumber(datum.diversity_simpson)",         as: "diversity_simpson_num" },
+          { calculate: "toNumber(datum.recent_arrivals_2017_2021)", as: "recent_arrivals_num" },
+          { calculate: "toNumber(datum.overseas_born_pct)",         as: "overseas_born_pct_num" },
+          { calculate: "toNumber(datum.new_arrivals_share)",        as: "new_arrivals_share_num" },
+          { calculate: "isValid(toNumber(datum.new_arrivals_rate)) ? toNumber(datum.new_arrivals_rate) : ((toNumber(datum.recent_arrivals_2017_2021)/max(1,toNumber(datum.total_persons)))*100)", as: "new_arrivals_rate_num" },
+          { calculate:
+              metric==="overseas_born_pct"  ? "datum.overseas_born_pct_num" :
+              metric==="diversity_simpson"  ? "datum.diversity_simpson_num" :
+              metric==="new_arrivals_share" ? "datum.new_arrivals_share_num" :
+                                              "datum.new_arrivals_rate_num",
+            as:"metric_value" }
+        ],
+        mark: { type:"geoshape", stroke:"#ffffff", strokeWidth:0.25 },
+        encoding: {
+          color: {
+            condition: {
+              test: "isValid(datum.metric_value)",
+              field:"metric_value", type:"quantitative",
+              title: meta.title, scale:{scheme: meta.scheme}
+            },
+            value:"#d8dde4"
+          },
+          tooltip: [
+            { field:"properties.SA3_CODE21", title:"SA3 code" },
+            { field:"SA3_NAME21",            title:"SA3 name" },
+            { field:"year",                  title:"Year" },
+            { field:"total_persons_num",     title:"Population", format:"," },
+            { field:"overseas_born_num",     title:"Overseas-born", format:"," },
+            { field:"overseas_born_pct_num", title:"Overseas-born (%)", format:".1f" },
+            { field:"diversity_simpson_num", title:"Simpson Diversity", format:".3f" },
+            { field:"recent_arrivals_num",   title:"New arrivals (2017–21)", format:"," },
+            { field:"new_arrivals_share_num",title:"New arrivals share (%)", format:".1f" },
+            { field:"new_arrivals_rate_num", title:"New arrivals rate (per 100)", format:".2f" }
+          ]
+        }
+      }
+    ],
+    config:{ view:{stroke:null}, axis:{labelFontSize:12,titleFontSize:12} }
+  };
+}
+
+function renderMap(){
+  const yearSel   = document.getElementById('yearSel');
+  const metricSel = document.getElementById('metricSel');
+  const year   = yearSel.value;
+  const metric = metricSel.value;
+
+  // disable new-arrivals for non-2021
+  const disallow = (year!=="2021");
+  ['new_arrivals_share','new_arrivals_rate'].forEach(v=>{
+    const opt=[...metricSel.options].find(o=>o.value===v);
+    if(opt) opt.disabled = disallow;
+  });
+  if(disallow && (metric==='new_arrivals_share'||metric==='new_arrivals_rate')){
+    metricSel.value='overseas_born_pct';
+  }
+
+  const w = document.getElementById('mapView').clientWidth || 1100;
+  const spec = mapSpec(year, metricSel.value, w);
+  vegaEmbed("#mapView", spec, {actions:false})
+    .then(()=> {
+      const title = METRIC_META[metricSel.value].title;
+      const st = document.getElementById("status");
+      st.textContent = `✅ Map loaded (${year} • ${title})`;
+      st.style.color="#1a7f37";
+    })
+    .catch(err=>{
+      const st = document.getElementById("status");
+      st.textContent = "❌ " + err.message;
+      st.style.color="#b00020";
+      console.error(err);
+    });
+}
+document.getElementById('yearSel').addEventListener('change', renderMap);
+document.getElementById('metricSel').addEventListener('change', renderMap);
+window.addEventListener('resize', ()=>renderMap());
+
+/* ---------- B. NOM line ---------- */
+const nomSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width: 900, height: 420, background:"#fff",
+  padding: {"left":8,"top":8,"right":10,"bottom":36},
+  data:{ url:"migration_flows_2004_2020_simple.csv" },
+  transform:[
+    { calculate:"toNumber(datum.NOM)", as:"NOM_num" },
+    { calculate:"isValid(datum.NOM_num)?datum.NOM_num:toNumber(datum.Net_Overseas_Migration)", as:"NOM_val" },
+    { calculate:"toDate(datum.Year + '-01-01')", as:"YearDate" },
+    { calculate:"'Net Overseas Migration'", as:"Series" }
+  ],
+  mark:{ type:"line", interpolate:"monotone", point:{filled:true,size:55}, stroke:"#2066b1", strokeWidth:3 },
+  encoding:{
+    x:{ field:"YearDate", type:"temporal", title:"Year",
+        axis:{ format:"%Y", tickCount:{interval:"year",step:1}, labelAngle:0, labelOverlap:false, grid:true } },
+    y:{ field:"NOM_val", type:"quantitative", title:"Net Overseas Migration (people)",
+        axis:{ format:",", labelExpr:"format(datum.value, ',')", grid:true } },
+    color:{ field:"Series", type:"nominal", title:"Indicator", scale:{range:["#2066b1"]}, legend:{orient:"top-left"} },
+    tooltip:[ {field:"YearDate",title:"Year",timeUnit:"year"}, {field:"NOM_val",title:"NOM",format:","} ]
+  },
+  config:{ view:{stroke:null}, axis:{labelFontSize:12,titleFontSize:12,gridColor:"#e9eef3"} }
+};
+
+/* ---------- C. SA2 box + jitter ---------- */
+const seifaFile = "seifa_2021_clean.csv";
+const sa3File   = "sa3_metrics_2021_final.csv";
+
+const specBox = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width: 1100, height: 420, background:"#fff",
+  padding: {"left":10,"top":8,"right":10,"bottom":40},
+  data:{ url: seifaFile },
+  transform:[
+    { calculate:"toString(datum.SA2_CODE)", as:"SA2_CODE_STR" },
+    { calculate:"substring(datum.SA2_CODE_STR,0,5)", as:"SA3_CODE21" },
+    { lookup:"SA3_CODE21", from:{ data:{url:sa3File}, key:"SA3_CODE21", fields:["overseas_born_pct"] } },
+    { calculate:"toNumber(datum.overseas_born_pct)", as:"OBP" },
+    { filter:"isValid(datum.OBP) && datum.OBP>=0 && datum.OBP<=80" }
+  ],
+  layer:[
+    { mark:{type:"boxplot", extent:"min-max", median:{color:"#000"} },
+      encoding:{
+        x:{ field:"IRSAD_DECILE", type:"ordinal", title:"IRSAD Decile (SEIFA 2021)" },
+        y:{ field:"OBP", type:"quantitative", title:"Overseas-born (%)" },
+        color:{ field:"IRSAD_DECILE", type:"ordinal", legend:null, scale:{scheme:"blues"} }
+      }},
+    { mark:{type:"point", filled:true, opacity:0.22, size:20, jitter:true},
+      encoding:{
+        x:{ field:"IRSAD_DECILE", type:"ordinal" },
+        y:{ field:"OBP", type:"quantitative" },
+        color:{ field:"IRSAD_DECILE", type:"ordinal", legend:null, scale:{scheme:"blues"} },
+        tooltip:[ {field:"SA2_NAME",title:"SA2"}, {field:"IRSAD_DECILE",title:"Decile"}, {field:"OBP",title:"Overseas-born (%)",format:".1f"} ]
+      }}
+  ],
+  config:{ view:{stroke:null}, axis:{grid:true,gridColor:"#eef2f6"} }
+};
+
+/* ---------- D. SA3 scatter (red) + regression ---------- */
+const specSA3Red = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width: 900, height: 440, background:"#fff",
+  padding: {"left":10,"top":8,"right":10,"bottom":44},
+  data:{ url: seifaFile },
+  transform:[
+    { calculate:"toString(datum.SA2_CODE)", as:"SA2_CODE_STR" },
+    { calculate:"substring(datum.SA2_CODE_STR,0,5)", as:"SA3_CODE21" },
+    { calculate:"toNumber(datum.IRSAD_SCORE)", as:"IRSAD" },
+    { filter:"isValid(datum.IRSAD) && datum.IRSAD>=600 && datum.IRSAD<=1200" },
+    { aggregate:[{op:"mean",field:"IRSAD",as:"IRSAD_mean"}], groupby:["SA3_CODE21"] },
+    { lookup:"SA3_CODE21", from:{ data:{url:sa3File}, key:"SA3_CODE21", fields:["SA3_NAME21","overseas_born_pct"] } },
+    { calculate:"toNumber(datum.overseas_born_pct)", as:"OBP" },
+    { filter:"isValid(datum.OBP) && datum.OBP>=0 && datum.OBP<=80" }
+  ],
+  layer:[
+    { mark:{type:"point", filled:true, size:70, opacity:.55, color:"#d73027"},
+      encoding:{
+        x:{ field:"IRSAD_mean", type:"quantitative", title:"Mean IRSAD (SEIFA 2021 per SA3)", scale:{zero:false} },
+        y:{ field:"OBP", type:"quantitative", title:"Overseas-born (%)", scale:{zero:false} },
+        tooltip:[ {field:"SA3_CODE21",title:"SA3 code"}, {field:"SA3_NAME21",title:"SA3 name"},
+                  {field:"IRSAD_mean",title:"Mean IRSAD",format:".0f"}, {field:"OBP",title:"Overseas-born (%)",format:".1f"} ]
+      }},
+    { transform:[{ regression:"OBP", on:"IRSAD_mean" }],
+      mark:{ type:"line", stroke:"#1a1a1a", strokeDash:[4,3], strokeWidth:2.5 },
+      encoding:{ x:{field:"IRSAD_mean"}, y:{field:"OBP"} }
+    }
+  ],
+  config:{ view:{stroke:null}, axis:{grid:true,gridColor:"#eef2f6"} }
+};
+
+/* ---------- E. Diversity vs Population (binned, cleaned) ---------- */
+const divpopSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width: 900, height: 520, background:"#fff",
+  padding: {"left":10,"top":8,"right":10,"bottom":48},
+  data:{ url: sa3File, format:{ type:"csv", parse:{ total_persons:"number", diversity_simpson:"number" } } },
+  transform:[ { filter:"isValid(datum.total_persons) && datum.total_persons>0 && isValid(datum.diversity_simpson) && datum.diversity_simpson>=0 && datum.diversity_simpson<=1" } ],
+  layer:[
+    /* Boxplots by population bin (hide its own x-axis to avoid duplicate axes) */
+    {
+      transform:[ { bin:{maxbins:10}, field:"total_persons", as:"pop_bin"} ],
+      mark:{ type:"boxplot", extent:"min-max", median:{color:"#000"} },
+      encoding:{
+        x:{ field:"pop_bin", type:"ordinal", axis:null },
+        y:{ field:"diversity_simpson", type:"quantitative",
+            title:"Diversity (Simpson Index)", scale:{ domain:[0,1] },
+            axis:{ grid:true, gridColor:"#eef2f6" } },
+        color:{ value:"#8fb8ff" },
+        tooltip:[
+          { field:"pop_bin", title:"Pop range" },
+          { field:"diversity_simpson", aggregate:"median", title:"Median diversity", format:".2f" },
+          { field:"diversity_simpson", aggregate:"mean",   title:"Mean diversity",   format:".2f" }
+        ]
+      }
+    },
+    /* Mean trend line (hide axes) */
+    {
+      transform:[
+        { bin:{maxbins:10}, field:"total_persons", as:"pop_bin" },
+        { aggregate:[
+            { op:"mean", field:"diversity_simpson", as:"mean_div" },
+            { op:"mean", field:"total_persons",     as:"mean_pop" }
+          ],
+          groupby:["pop_bin"] }
+      ],
+      mark:{ type:"line", interpolate:"monotone", stroke:"#c0392b", strokeWidth:3 },
+      encoding:{
+        x:{ field:"mean_pop", type:"quantitative", scale:{ type:"log" }, axis:null },
+        y:{ field:"mean_div", type:"quantitative", axis:null }
+      }
+    },
+    /* Mean points with the single visible x-axis (bottom) */
+    {
+      transform:[
+        { bin:{maxbins:10}, field:"total_persons", as:"pop_bin" },
+        { aggregate:[
+            { op:"mean", field:"diversity_simpson", as:"mean_div" },
+            { op:"mean", field:"total_persons",     as:"mean_pop" }
+          ],
+          groupby:["pop_bin"] }
+      ],
+      mark:{ type:"point", filled:true, size:70, color:"#c0392b" },
+      encoding:{
+        x:{ field:"mean_pop", type:"quantitative", scale:{ type:"log" },
+            axis:{ format:"~s", title:"Population (log scale)" } },
+        y:{ field:"mean_div", type:"quantitative" },
+        tooltip:[
+          { field:"mean_pop", title:"Mean pop (bin)", format:"~s" },
+          { field:"mean_div", title:"Mean diversity", format:".2f" }
+        ]
+      }
+    }
+  ],
+  config:{ view:{stroke:null}, axis:{labelFontSize:12,titleFontSize:12} }
+};
+
+/* ---------- render all ---------- */
+function renderAll(){
+  renderMap();
+  vegaEmbed("#nomView", nomSpec, {actions:false});
+  vegaEmbed("#box_sa2", specBox, {actions:false});
+  vegaEmbed("#sa3_scatter_red", specSA3Red, {actions:false});
+  vegaEmbed("#divpopView", divpopSpec, {actions:false});
+}
+renderAll();
+window.addEventListener('resize', ()=>{ renderAll(); });
+</script>
+
+</body>
+</html>
