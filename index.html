@@ -146,11 +146,11 @@
 
 <script>
 /* ---------- shared config ---------- */
-const TOPO = "sa3_2021_boundaries.json"; // object name: sa3_2021_boundaries
+const TOPO = "DV2/Page/sa3_2021_boundaries.json"; // object name: sa3_2021_boundaries
 const CSV_BY_YEAR = {
-  "2011": "sa3_metrics_2011_final.csv",
-  "2016": "sa3_metrics_2016_final.csv",
-  "2021": "sa3_metrics_2021_final.csv"
+  "2011": "DV2/Page/sa3_metrics_2011_final.csv",
+  "2016": "DV2/Page/sa3_metrics_2016_final.csv",
+  "2021": "DV2/Page/sa3_metrics_2021_final.csv"
 };
 const METRIC_META = {
   overseas_born_pct:{ title:"Overseas-born (%)",scheme:"blues",fmt:".1f"},
@@ -281,7 +281,7 @@ const nomSpec = {
   $schema:"https://vega.github.io/schema/vega-lite/v5.json",
   width: 900, height: 420, background:"#fff",
   padding: {"left":8,"top":8,"right":10,"bottom":36},
-  data:{ url:"migration_flows_2004_2020_simple.csv" },
+  data:{ url:"DV2/Page/migration_flows_2004_2020_simple.csv" },
   transform:[
     { calculate:"toNumber(datum.NOM)", as:"NOM_num" },
     { calculate:"isValid(datum.NOM_num)?datum.NOM_num:toNumber(datum.Net_Overseas_Migration)", as:"NOM_val" },
@@ -301,8 +301,8 @@ const nomSpec = {
 };
 
 /* ---------- C. SA2 box + jitter ---------- */
-const seifaFile = "seifa_2021_clean.csv";
-const sa3File   = "sa3_metrics_2021_final.csv";
+const seifaFile = "DV2/Page/seifa_2021_clean.csv";
+const sa3File   = "DV2/Page/sa3_metrics_2021_final.csv";
 
 const specBox = {
   $schema:"https://vega.github.io/schema/vega-lite/v5.json",
@@ -374,7 +374,6 @@ const divpopSpec = {
   data:{ url: sa3File, format:{ type:"csv", parse:{ total_persons:"number", diversity_simpson:"number" } } },
   transform:[ { filter:"isValid(datum.total_persons) && datum.total_persons>0 && isValid(datum.diversity_simpson) && datum.diversity_simpson>=0 && datum.diversity_simpson<=1" } ],
   layer:[
-    /* Boxplots by population bin (hide its own x-axis to avoid duplicate axes) */
     {
       transform:[ { bin:{maxbins:10}, field:"total_persons", as:"pop_bin"} ],
       mark:{ type:"boxplot", extent:"min-max", median:{color:"#000"} },
@@ -391,7 +390,6 @@ const divpopSpec = {
         ]
       }
     },
-    /* Mean trend line (hide axes) */
     {
       transform:[
         { bin:{maxbins:10}, field:"total_persons", as:"pop_bin" },
@@ -407,7 +405,6 @@ const divpopSpec = {
         y:{ field:"mean_div", type:"quantitative", axis:null }
       }
     },
-    /* Mean points with the single visible x-axis (bottom) */
     {
       transform:[
         { bin:{maxbins:10}, field:"total_persons", as:"pop_bin" },
